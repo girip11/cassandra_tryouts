@@ -1,0 +1,49 @@
+version: '3.5'
+
+#
+# docker-compose.yaml
+#
+
+# workaround for Docker-compose / Gremlin Server bug interaction
+# http://www.luketillman.com/datastax-graph-and-studio-with-docker-compose/
+networks:
+  datastax:
+    name: datastax
+
+services:
+  # DataStax Enterprise
+  dse:
+    image: datastax/dse-server:6.0.2
+    command: [ -s -g ]
+    ports:
+    - "9042:9042" # cassandra
+    - "8983:8983" # search
+    - "8182:8182" # graph
+    environment:
+      DS_LICENSE: accept
+    volumes:
+    - "./data:/var/lib/cassandra"
+    # Allow DSE to lock memory with mlock
+    cap_add:
+    - IPC_LOCK
+    ulimits:
+      memlock: -1
+    networks:
+    - datastax
+    container_name: dse
+
+  # One instance of DataStax Studio
+  studio:
+    image: datastax/dse-studio:6.0.2
+    ports:
+    # The Web UI exposed to our host
+    - "9091:9091"
+    depends_on:
+    - dse
+    environment:
+      DS_LICENSE: accept
+    volumes:
+    - "./notebooks:/var/lib/datastax-studio"
+    networks:
+    - datastax
+    container_name: studio
