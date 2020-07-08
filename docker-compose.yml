@@ -1,36 +1,39 @@
-version: '3'
+version: "3.7"
 
-#
-# docker-compose.yaml
-#
+volumes:
+  dse-cassandra-data:
+  dse-studio-notebooks:
 
 services:
+  # Reference: https://hub.docker.com/r/datastax/dse-server
   # DataStax Enterprise
   dse:
-    image: datastax/dse-server:6.0.2
-    command: [ -s ]
+    image: datastax/dse-server:6.8.1
+    container_name: dse
+    command: [-s]
     ports:
-    - "9042:9042" # cassandra
+      - "9042:9042" # cassandra
     environment:
       DS_LICENSE: accept
     volumes:
-    - "./data:/var/lib/cassandra"
+      - dse-cassandra-data:/var/lib/cassandra
     # Allow DSE to lock memory with mlock
     cap_add:
-    - IPC_LOCK
+      - IPC_LOCK
     ulimits:
       memlock: -1
 
+  # Reference: https://hub.docker.com/r/datastax/dse-studio
   # One instance of DataStax Studio
   studio:
-    image: datastax/dse-studio:6.0.2
+    image: datastax/dse-studio:6.8.1
+    container_name: studio
     ports:
-    # The Web UI exposed to our host
-    - "9091:9091"
+      # The Web UI exposed to our host
+      - "9091:9091"
     depends_on:
-    - dse
+      - dse
     environment:
       DS_LICENSE: accept
     volumes:
-    - "./notebooks:/var/lib/datastax-studio"
-
+      - dse-studio-notebooks:/var/lib/datastax-studio

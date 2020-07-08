@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.renderWhitespace": "all",
+
+    "[markdown]": {
+      "editor.codeActionsOnSave": {
+        "source.fixAll.markdownlint": true
+      },
+      "editor.wordWrap": "wordWrapColumn",
+      "editor.wrappingIndent": "none"
+    },
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80,
+    "editor.detectIndentation": false,
+    "editor.fontSize": 16,
+
+    "terminal.integrated.env.linux": {
+      "VSCODE_INTEGRATED_TERMINAL": "true",
+      "PYTHONPATH": "${workspaceFolder}:${env:PYTHONPATH}"
+    },
+    "terminal.integrated.rendererType": "dom",
+    "git.autorefresh": true,
+    "markdownlint.ignore": ["**/*.md.html"],
+    "files.insertFinalNewline": true,
+    "files.associations": {
+      "*.md.html": "markdown"
+    },
+    "shellcheck.enable": true,
+    "shellcheck.useWorkspaceRootAsCwd": true,
+    "shellcheck.run": "onSave",
+    "shellformat.flag": "-i 2 -ci -sr -bn"
+  }
+}
