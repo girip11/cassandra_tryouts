@@ -1,5 +1,9 @@
 version: "3.7"
 
+networks:
+  datastax:
+    name: datastax
+
 volumes:
   dse-cassandra-data:
   dse-studio-notebooks:
@@ -17,11 +21,18 @@ services:
       DS_LICENSE: accept
     volumes:
       - dse-cassandra-data:/var/lib/cassandra
+    networks:
+      - datastax
     # Allow DSE to lock memory with mlock
     cap_add:
       - IPC_LOCK
     ulimits:
       memlock: -1
+    deploy:
+      resources:
+        limits:
+          cpus: "2.00"
+          memory: 5G
 
   # Reference: https://hub.docker.com/r/datastax/dse-studio
   # One instance of DataStax Studio
@@ -37,3 +48,10 @@ services:
       DS_LICENSE: accept
     volumes:
       - dse-studio-notebooks:/var/lib/datastax-studio
+    networks:
+      - datastax
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 2G

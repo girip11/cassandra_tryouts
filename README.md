@@ -9,7 +9,9 @@ Examples and tryouts of Apache Cassandra based on the Datastax workshop
 
 ```Bash
 # If you need graph services, use docker-compose-with-graph.yml
-docker-compose -f docker-compose.yml up
+# --compatibility option is required to run the deploy section in compose
+# Reference: https://stackoverflow.com/questions/42345235/how-to-specify-memory-cpu-limit-in-docker-compose-version-3
+docker-compose -f docker-compose.yml --compatibility up
 ```
 
 ## Setting data stuio
